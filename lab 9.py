@@ -40,32 +40,35 @@ def add_profit_column(dataset):
     for i in range(len(dataset)):
         gross_earnings = dataset[i][box_gross]
         movies_budget = dataset[i][budget]
-        profit = gross_earnings - movies_budget
-        dataset[i].append(profit)
+        profits = gross_earnings - movies_budget
+        dataset[i].append(profits)
     return dataset
 
 
 def print_min_and_max_profit(dataset):
-    max_profit = 0
-    min_profit = 0
-    max_profit_index = 0
-    min_profit_index = 0
+    profit_list = []
     for i in range(len(dataset)):
-        if dataset[i][profit] > max_profit:
-            max_profit = dataset[i][profit]
-            max_profit_index = i
-        elif dataset[i][profit] < min_profit:
-            min_profit = dataset[i][profit]
-            min_profit_index = i
+        profit_list.append(dataset[i][profit])
+    max_value = max(profit_list)
+    min_value = min(profit_list)
+    max_index = profit_list.index(max_value)
+    min_index = profit_list.index(min_value)
+    print("Highest Profit Movie:", dataset[max_index], "| total profit:", max_value)
+    print("Lowest Profit Movie:", dataset[min_index], "| total profit:", min_value)
 
-    return max_profit_index, min_profit_index
+
+def save_file(filename):
+    with open(filename, "w") as file:
+        for line in file:
+            for element in line:
+                file.write(str(element) + ",")
+            file.write("\n")
 
 
-movie_list = load_movie_data("movies.csv")
-new_list = add_profit_column(movie_list)
-indexes = print_min_and_max_profit(new_list)
-print(new_list)
-print("\n")
-print(indexes)
-print(new_list[29])
-print(new_list[4])
+def main():
+    movie_list = load_movie_data("movies.csv")
+    movie_list_with_profits = add_profit_column(movie_list)
+    print_min_and_max_profit(movie_list_with_profits)
+
+
+main()
